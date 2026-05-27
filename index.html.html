@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Planes Institucionales — FVP Fiducoomeva</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f3ee;
+  --surface: #fffefb;
+  --surface2: #f0ede6;
+  --border: #ddd9d0;
+  --border-strong: #b8b3a8;
+  --text: #1a1915;
+  --text-muted: #6b6760;
+  --text-light: #9b9890;
+  --accent: #1a4a3c;
+  --accent-light: #e8f2ee;
+  --accent-mid: #2d6b58;
+  --gold: #c8860a;
+  --gold-light: #fdf4e3;
+  --danger: #b83232;
+  --danger-light: #fdf0f0;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.05);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+.header-left {}
+.logo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: .75rem;
+}
+.logo-dot { width: 6px; height: 6px; background: #6fcfb0; border-radius: 50%; }
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--text);
+  line-height: 1.2;
+}
+h1 span { color: var(--accent-mid); }
+.header-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: .4rem;
+}
+.norm-badge {
+  background: var(--gold-light);
+  border: 0.5px solid #e8c97a;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  align-self: flex-start;
+}
+
+/* ── Cards / sections ── */
+.card {
+  background: var(--surface);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border);
+}
+
+/* ── Grid inputs ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+@media(max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+  h1 { font-size: 20px; }
+}
+@media(max-width: 420px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.field input {
+  background: var(--surface2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: 'DM Mono', monospace;
+  color: var(--text);
+  transition: border-color .15s, background .15s;
+  width: 100%;
+}
+.field input:focus {
+  outline: none;
+  border-color: var(--accent-mid);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px rgba(45,107,88,.08);
+}
+.field input:hover { border-color: var(--border-strong); }
+.field .hint { font-size: 11px; color: var(--text-light); }
+
+/* ── Divider ── */
+.divider { border: none; border-top: 0.5px solid var(--border); margin: 1rem 0; }
+
+/* ── Metric cards ── */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+@media(max-width: 600px) { .metrics-row { grid-template-columns: 1fr 1fr; } }
+
+.metric {
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+.metric-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; line-height: 1.3; }
+.metric-value { font-size: 17px; font-weight: 600; font-family: 'DM Mono', monospace; color: var(--text); }
+.metric-value.green { color: var(--accent-mid); }
+.metric-value.gold { color: var(--gold); }
+.metric-value.muted { color: var(--text-muted); }
+
+/* ── Comparison ── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+@media(max-width: 560px) { .compare-grid { grid-template-columns: 1fr; } }
+
+.cmp-card {
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  background: var(--surface);
+}
+.cmp-card.best {
+  border: 1.5px solid var(--accent-mid);
+  background: var(--accent-light);
+}
+.cmp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.cmp-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.badge-rec {
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.cmp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 5px 0;
+  border-bottom: 0.5px solid var(--border);
+  gap: 8px;
+}
+.cmp-row:last-child { border-bottom: none; }
+.cmp-row.total { padding-top: 8px; }
+.cmp-lbl { font-size: 12px; color: var(--text-muted); flex: 1; }
+.cmp-val { font-size: 13px; font-family: 'DM Mono', monospace; font-weight: 500; color: var(--text); white-space: nowrap; }
+.cmp-val.good { color: var(--accent-mid); font-weight: 600; }
+.cmp-val.total-val { font-size: 14px; font-weight: 600; }
+.cmp-val.pct { font-size: 12px; color: var(--text-muted); }
+
+/* ── Ahorro box ── */
+.ahorro-box {
+  background: var(--accent);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media(max-width: 560px) { .ahorro-box { flex-direction: column; text-align: center; } }
+.ahorro-left {}
+.ahorro-label { font-size: 12px; color: rgba(255,255,255,.65); font-weight: 500; letter-spacing: .04em; margin-bottom: 6px; }
+.ahorro-value { font-size: 32px; font-weight: 600; font-family: 'DM Mono', monospace; color: #fff; line-height: 1; }
+.ahorro-sub { font-size: 12px; color: rgba(255,255,255,.55); margin-top: 6px; }
+.ahorro-right { text-align: right; }
+.ahorro-acc-label { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 4px; }
+.ahorro-acc-val { font-size: 22px; font-weight: 600; font-family: 'DM Mono', monospace; color: #6fcfb0; }
+.ahorro-acc-sub { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 4px; }
+
+/* ── Detail row ── */
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media(max-width: 640px) { .detail-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ── Footer ── */
+.footer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 0.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.footer-note { font-size: 11px; color: var(--text-light); line-height: 1.6; max-width: 600px; }
+.footer-brand { font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: .04em; white-space: nowrap; }
+
+/* ── Print ── */
+@media print {
+  body { background: #fff; }
+  .page { padding: 1rem; }
+  .card { box-shadow: none; border: 1px solid #ddd; }
+  .ahorro-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo-chip"><div class="logo-dot"></div>FIDUCOOMEVA</div>
+      <h1>Calculadora <span>Planes Institucionales</span></h1>
+      <p class="header-sub">Fondo Voluntario de Pensión · Optimización tributaria para accionistas</p>
+    </div>
+    <div class="norm-badge">Dec. 2250 / 2017 · Art. 126-1 E.T.</div>
+  </div>
+
+  <!-- INPUTS -->
+  <div class="card">
+    <div class="card-title">Datos de la empresa</div>
+    <div class="grid-3">
+      <div class="field">
+        <label>Utilidad antes de impuesto ($)</label>
+        <input type="number" id="utilidad" value="1000000000" step="10000000">
+        <span class="hint">Base para el cálculo de renta del 35%</span>
+      </div>
+      <div class="field">
+        <label>Número de accionistas beneficiarios</label>
+        <input type="number" id="accionistas" value="3" min="1" max="200">
+        <span class="hint">Accionistas vinculados al plan FVP</span>
+      </div>
+      <div class="field">
+        <label>UVT vigente ($)</label>
+        <input type="number" id="uvt" value="52374" step="100">
+        <span class="hint">Valor UVT año gravable actual</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Parámetros normativos</div>
+    <div class="grid-4">
+      <div class="field">
+        <label>SMMLV ($)</label>
+        <input type="number" id="smmlv" value="1750905">
+      </div>
+      <div class="field">
+        <label>Renta empresa (%)</label>
+        <input type="number" id="rentaEmp" value="35" min="0" max="100" step="0.5">
+      </div>
+      <div class="field">
+        <label>Renta accionista (%)</label>
+        <input type="number" id="rentaAcc" value="33" min="0" max="100" step="0.5">
+      </div>
+      <div class="field">
+        <label>Seguridad social (%)</label>
+        <input type="number" id="tasaSS" value="28.5" min="0" max="100" step="0.5">
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTADOS -->
+  <div id="resultados"></div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p class="footer-note">
+      Calculadora de uso interno. Los resultados son estimativos y no constituyen asesoría tributaria. 
+      Verifique los valores normativos con su contador o asesor fiscal. 
+      Aporte máximo deducible: 3.800 UVT por accionista · Descuento renta: 19% sobre base, máx. 1.090 UVT.
+    </p>
+    <div class="footer-brand">FVP · FIDUCOOMEVA</div>
+  </div>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fmt = v => '$\u00a0' + Math.round(v).toLocaleString('es-CO');
+const pct = v => (v * 100).toFixed(1) + '%';
+
+function calc() {
+  const utilidad  = +$('utilidad').value  || 0;
+  const nAcc      = Math.max(1, +$('accionistas').value || 1);
+  const uvt       = +$('uvt').value       || 52374;
+  const smmlv     = +$('smmlv').value     || 1750905;
+  const rEmp      = (+$('rentaEmp').value || 35)  / 100;
+  const rAcc      = (+$('rentaAcc').value || 33)  / 100;
+  const tSS       = (+$('tasaSS').value   || 28.5)/ 100;
+
+  const UVT_PLAN  = 3800;
+  const UVT_DESC  = 1090;
+  const SS_MAX35  = 35;
+  const BASE_LIQ  = 0.40;
+  const DESC_RENTA= 0.19;
+
+  // ── SIN PLAN ──────────────────────────────────
+  const rEmp_sin     = utilidad * rEmp;
+  const util_sin     = utilidad - rEmp_sin;
+  const xAcc_sin     = util_sin / nAcc;
+  const baseLiq_sin  = xAcc_sin * BASE_LIQ;
+  const maxSS        = SS_MAX35 * smmlv;
+  const ss_sin       = Math.min(baseLiq_sin, maxSS) * tSS;
+  const ingDesc_sin  = xAcc_sin - ss_sin;
+  const rAcc33_sin   = ingDesc_sin * rAcc;
+  const maxDesc      = UVT_DESC * uvt;
+  const desc19_sin   = Math.min(maxDesc, ingDesc_sin) * DESC_RENTA;
+  const impRenta_sin = rAcc33_sin - desc19_sin;
+  const cargaAcc_sin = impRenta_sin + ss_sin;
+  const totalC_sin   = rEmp_sin + cargaAcc_sin * nAcc;
+  const neto_sin     = xAcc_sin - cargaAcc_sin;
+
+  // ── CON PLAN ──────────────────────────────────
+  const planXAcc     = UVT_PLAN * uvt;
+  const totalFVP     = planXAcc * nAcc;
+  const utilConPlan  = Math.max(0, utilidad - totalFVP);
+  const rEmp_con     = utilConPlan * rEmp;
+  const util_con     = utilConPlan - rEmp_con;
+  const xAcc_con     = util_con / nAcc;
+  const baseLiq_con  = xAcc_con * BASE_LIQ;
+  const ss_con       = Math.min(baseLiq_con, maxSS) * tSS;
+  const ingDesc_con  = xAcc_con - ss_con;
+  const rAcc33_con   = ingDesc_con * rAcc;
+  const desc19_con   = Math.min(maxDesc, ingDesc_con) * DESC_RENTA;
+  const impRenta_con = rAcc33_con - desc19_con;
+  const cargaAcc_con = impRenta_con + ss_con;
+  const totalC_con   = rEmp_con + cargaAcc_con * nAcc;
+  const neto_con     = xAcc_con - cargaAcc_con + planXAcc;
+
+  // ── AHORRO ────────────────────────────────────
+  const ahorro       = totalC_sin - totalC_con;
+  const ahorroXAcc   = ahorro / nAcc;
+  const difNeto      = neto_con - neto_sin;
+  const pctCarga_sin = utilidad > 0 ? totalC_sin / utilidad : 0;
+  const pctCarga_con = utilidad > 0 ? totalC_con / utilidad : 0;
+
+  $('resultados').innerHTML = `
+    <div class="card">
+      <div class="card-title">Plan FVP calculado</div>
+      <div class="metrics-row">
+        <div class="metric">
+          <div class="metric-label">Aporte máx. por accionista<br>(3.800 UVT)</div>
+          <div class="metric-value gold">${fmt(planXAcc)}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Total aporte empresa<br>al FVP (${nAcc} accionistas)</div>
+          <div class="metric-value gold">${fmt(totalFVP)}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Dividendo por accionista<br>con plan</div>
+          <div class="metric-value">${fmt(xAcc_con)}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="cmp-card">
+        <div class="cmp-header">
+          <div class="cmp-title">Sin plan institucional</div>
+        </div>
+        <div class="cmp-row"><span class="cmp-lbl">Utilidad empresa</span><span class="cmp-val">${fmt(utilidad)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Renta empresa (${Math.round(rEmp*100)}%)</span><span class="cmp-val">${fmt(rEmp_sin)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Utilidad a distribuir</span><span class="cmp-val">${fmt(util_sin)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Dividendo x accionista</span><span class="cmp-val">${fmt(xAcc_sin)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Seguridad social (total)</span><span class="cmp-val">${fmt(ss_sin * nAcc)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Renta accionistas (total)</span><span class="cmp-val">${fmt(impRenta_sin * nAcc)}</span></div>
+        <hr class="divider">
+        <div class="cmp-row total"><span class="cmp-lbl">Total cargas tributarias</span><span class="cmp-val total-val">${fmt(totalC_sin)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">% sobre utilidad</span><span class="cmp-val pct">${pct(pctCarga_sin)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Neto por accionista</span><span class="cmp-val">${fmt(neto_sin)}</span></div>
+      </div>
+
+      <div class="cmp-card best">
+        <div class="cmp-header">
+          <div class="cmp-title">Con plan institucional FVP</div>
+          <div class="badge-rec">RECOMENDADO</div>
+        </div>
+        <div class="cmp-row"><span class="cmp-lbl">Utilidad (neta de FVP)</span><span class="cmp-val">${fmt(utilConPlan)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Renta empresa (${Math.round(rEmp*100)}%)</span><span class="cmp-val">${fmt(rEmp_con)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Utilidad a distribuir</span><span class="cmp-val">${fmt(util_con)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Dividendo x accionista</span><span class="cmp-val">${fmt(xAcc_con)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Seguridad social (total)</span><span class="cmp-val">${fmt(ss_con * nAcc)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Renta accionistas (total)</span><span class="cmp-val">${fmt(impRenta_con * nAcc)}</span></div>
+        <hr class="divider">
+        <div class="cmp-row total"><span class="cmp-lbl">Total cargas tributarias</span><span class="cmp-val total-val">${fmt(totalC_con)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">% sobre utilidad</span><span class="cmp-val pct">${pct(pctCarga_con)}</span></div>
+        <div class="cmp-row"><span class="cmp-lbl">Neto por accionista (+ FVP)</span><span class="cmp-val good">${fmt(neto_con)}</span></div>
+      </div>
+    </div>
+
+    <div class="ahorro-box">
+      <div class="ahorro-left">
+        <div class="ahorro-label">AHORRO TRIBUTARIO TOTAL CON PLAN FVP</div>
+        <div class="ahorro-value">${fmt(ahorro)}</div>
+        <div class="ahorro-sub">
+          Reducción de carga: ${pct(pctCarga_sin)} → ${pct(pctCarga_con)} sobre la utilidad
+        </div>
+      </div>
+      <div class="ahorro-right">
+        <div class="ahorro-acc-label">BENEFICIO ADICIONAL POR ACCIONISTA</div>
+        <div class="ahorro-acc-val">${fmt(difNeto)}</div>
+        <div class="ahorro-acc-sub">neto extra vs. sin plan · ${fmt(ahorroXAcc)} ahorro fiscal</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Detalle liquidación por accionista · Con plan FVP</div>
+      <div class="detail-grid">
+        <div class="metric">
+          <div class="metric-label">Base liquidación SS (40% del dividendo)</div>
+          <div class="metric-value">${fmt(baseLiq_con)}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">SS pagada por accionista (máx. 35 SMMLV)</div>
+          <div class="metric-value">${fmt(ss_con)}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Descuento renta 19% (máx. 1.090 UVT)</div>
+          <div class="metric-value green">${fmt(desc19_con)}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Impuesto renta por accionista</div>
+          <div class="metric-value">${fmt(impRenta_con)}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+document.querySelectorAll('input').forEach(el => el.addEventListener('input', calc));
+calc();
+</script>
+</body>
+</html>
